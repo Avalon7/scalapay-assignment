@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Display configration</title>
+</head>
+
+
+<body>
+    <h1>This is the page that displays configration page</h1>
+    <% JSON.stringify(info) %>
+    <table>
+    	<thead>
+    		<tr>
+    			<th>type</th>
+    			<th>description</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+
+    			<tr>
+    				<td><%= info.type %></td>
+    				<td><%= info.description %></td>
+    			</tr>
+
+    	</tbody>
+    </table>
+</body>
+</html>
