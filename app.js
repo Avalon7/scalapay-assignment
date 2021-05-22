@@ -7,14 +7,14 @@ const app = express();
 app.set('view engine', 'ejs');
 
 //listen for requests
-app.listen(3000);
+app.listen(3002);
 
 app.get('/', (req, res) => {
 	res.render('index');
 });
 
-app.get('/display', (req, res) =>{
-	var options = {
+app.get('/configurations', (req, res) =>{
+	const options = {
   	'method': 'GET',
   	'url': 'https://staging.api.scalapay.com/v2/configurations',
   	'headers': {
@@ -24,13 +24,18 @@ app.get('/display', (req, res) =>{
 	};
 	request(options, function (error, response) {
 	  if (error) throw new Error(error);
-	  const info = JSON.parse(response.body);
-	  res.render('display', {info})
-	  console.log(response.body);
+	  const data = JSON.parse(response.body);
+	  console.log(data);
+	  // res.render('display', {data})
+	  return res.json({
+	  	data
+	  })
 	});
-	// res.sendFile('./views/display.html', { root: __dirname});
 })
 
-app.use((req, res) => {
-	res.status(404).sendFile('./views/404.html', { root: __dirname})
-})
+// app.post('/orders', (req, res) =>{
+
+// })
+// app.use((req, res) => {
+// 	res.status(404).sendFile('./views/404.html', { root: __dirname})
+// })
