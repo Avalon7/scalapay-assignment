@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 const initialState = {
-  //dummy data for total price
-      totalAmount: '20',
+      //dummy data for total price
+      totalAmount: '30',
       givenName: '',
       surName: '',
       //dummy data for itemLists      
@@ -47,6 +47,7 @@ const initialState = {
      suburb: '',
      postcode: '',
      countryCode: '',
+     // states for error messages
      givenNameError: '',
      surNameError: '',
      emailError: '',
@@ -54,7 +55,8 @@ const initialState = {
      addressError: '',
      suburbError: '',
      postcodeError: '',
-     countryCodeError: ''
+     countryCodeError: '',
+     reponseError: ''
 }
 class orders extends Component{
 
@@ -63,10 +65,12 @@ class orders extends Component{
     this.state = initialState;
   }
 
+  // function to detect any changes for inputfields and set to state
   changeHandler = (e) => {
     this.setState({ [e.target.name]: e.target.value})
   }
 
+  // function to handle events after submitton button is pressed
   submitHandler = e => {
     e.preventDefault()
     console.log(this.state)
@@ -75,10 +79,10 @@ class orders extends Component{
       axios
         .post('/orders', this.state)
         .then(res => {
-          console.log(res.data)
           console.log(res.status)
           if(res.status === 200){
             console.log('status ok')
+            // redirect to the checkout
             window.location.href = res.data.data.checkoutUrl;
           }
           else if(res.status === 400){
@@ -86,6 +90,8 @@ class orders extends Component{
           }
         })
         .catch(error => {
+          let reponseError = 'There is an issue with your order.';
+          this.setState(reponseError)
           console.log(error)
         })
         //then reset the form
@@ -140,14 +146,31 @@ class orders extends Component{
   }
 
   render() {
-    const {totalAmount, givenName, surName, items, email, phone, address, suburb,  postcode, countryCode}= this.state
-    console.log(items)
+    const {totalAmount, givenName, surName, items, email, phone, address, suburb,  postcode, countryCode} = this.state
+
     return (
       <div>
         <h2>Now you can submit your order:</h2>
         <div>
-          {items.map(item => <div key={item.name}>{item.name} {item.category} {item.subcategory[0]} {item.subcategory[1]}</div>)}
+          {items.map(item => (
+            <div key={item.name}>
+              <div>Item Name: {item.name}</div>
+              <div>Item Category: {item.category}</div>
+              <div>Item Subcategory: {item.subcategory[0]}</div>
+              <div>Item Subcategory: {item.subcategory[1]}</div>
+              <div>Item Brand: {item.brand}</div>
+              <div>Item Gtin: {item.gtin}</div>
+              <div>Item Sku: {item.sku}</div>
+              <div>Item Quantity: {item.quantity}</div>
+              <div>Item Price: {item.price.amount} {item.price.currency}</div>
+            </div>
+          ))}
         </div>
+        <p><b>Total Price: 30 EUR</b></p>
+        <p>Please enter details for the order:</p>
+        <div style={{ frontSize: 12, color: "red"}}>
+              {this.state.reponseError}
+            </div>
         <form onSubmit={this.submitHandler}>
           <div>
             <p>Given name: <input type="text" name="givenName" onChange={this.changeHandler}/></p>

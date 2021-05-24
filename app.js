@@ -35,20 +35,12 @@ app.get('/configurations', (req, res) =>{
 	});
 })
 
+// Handle POST request from client, make another POST request to enxternal API to get responses
 app.post('/orders', jsonParser, (req, res) =>{
-console.log(typeof(req.body.totalAmount));
-console.log(req.body.givenName);
-console.log(req.body.surName);
-console.log(req.body.items);
-console.log(req.body.email);
-console.log(req.body.phone);
-console.log(req.body.address);
-console.log(req.body.suburb);
-console.log(req.body.postcode);
-console.log(req.body.countryCode);
 
-var request = require('request');
-var options = {
+let request = require('request');
+// construct the options
+let options = {
   'method': 'POST',
   'url': 'https://staging.api.scalapay.com/v2/orders',
   'headers': {
@@ -110,7 +102,7 @@ var options = {
   })
 
 };
-console.log(options)
+// Handle the response from the API and return data to client
 request(options, function (error, response) {
   if (error) throw new Error(error);
   const data = JSON.parse(response.body);
@@ -120,6 +112,3 @@ request(options, function (error, response) {
   })
 });
 })
-// app.use((req, res) => {
-// 	res.status(404).sendFile('./views/404.html', { root: __dirname})
-// })
