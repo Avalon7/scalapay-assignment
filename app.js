@@ -29,7 +29,6 @@ app.get('/configurations', (req, res) =>{
 	  if (error) throw new Error(error);
 	  const data = JSON.parse(response.body);
 	  console.log(data);
-	  // res.render('display', {data})
 	  return res.json({
 	  	data
 	  })
@@ -40,7 +39,14 @@ app.post('/orders', jsonParser, (req, res) =>{
 console.log(typeof(req.body.totalAmount));
 console.log(req.body.givenName);
 console.log(req.body.surName);
-console.log(req.body.itemList);
+console.log(req.body.items);
+console.log(req.body.email);
+console.log(req.body.phone);
+console.log(req.body.address);
+console.log(req.body.suburb);
+console.log(req.body.postcode);
+console.log(req.body.countryCode);
+
 var request = require('request');
 var options = {
   'method': 'POST',
@@ -56,10 +62,10 @@ var options = {
       "currency": "EUR"
     },
     "consumer": {
-      "phoneNumber": "0400000001",
-      "givenNames": "Joe",
-      "surname": "Consumer",
-      "email": "test@scalapay.com"
+      "phoneNumber": req.body.phone,
+      "givenNames": req.body.givenName,
+      "surname": req.body.surName,
+      "email": req.body.email
     },
     "billing": {
       "name": "",
@@ -70,12 +76,12 @@ var options = {
       "phoneNumber": ""
     },
     "shipping": {
-      "name": "Joe Consumer",
-      "line1": "Via della Rosa, 23",
-      "suburb": "Montelupo Fiorentino",
-      "postcode": "50056",
-      "countryCode": "IT",
-      "phoneNumber": "0400000000"
+      "name": req.body.givenName + ' ' + req.body.surName,
+      "line1": req.body.address,
+      "suburb": req.body.suburb,
+      "postcode": req.body.postcode,
+      "countryCode": req.body.countryCode,
+      "phoneNumber": req.body.phone
     },
     "items": req.body.items,
     "discounts": [
@@ -112,7 +118,6 @@ request(options, function (error, response) {
   return res.json({
   	data
   })
-  // return data;
 });
 })
 // app.use((req, res) => {
