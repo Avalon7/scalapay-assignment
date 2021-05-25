@@ -4,14 +4,23 @@
   "description": "this is the assignmenr for Scalapay's interview",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon app.js",
+    "client": "cd client && yarn start",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "create-react-app": "^4.0.3",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "n": "^7.2.2",
     "nodemon": "^2.0.7",
     "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.0"
   }
 }
